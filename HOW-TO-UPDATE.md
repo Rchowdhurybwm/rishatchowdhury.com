@@ -107,3 +107,24 @@ Porkbun; DNS stays at Porkbun with an ALIAS on the root pointing to
 - Resize the window narrow to confirm it still reads on a phone
 - Confirm the résumé button downloads the right PDF
 - Search the file for `Lorem`, `TODO`, or `[` to catch leftovers
+
+---
+
+## The contact page
+
+`contact.html` is a second page, linked from the "Start a conversation"
+button at the bottom of the homepage.
+
+The form does not send email by itself. When someone fills it in and clicks
+the button, it opens *their* email app with the message already written,
+addressed to you. Nothing is stored, nothing to maintain.
+
+To change the address it sends to, search `contact.html` for:
+
+```js
+const TO = 'rishat.chowdhury1@gmail.com';
+```
+
+The email, phone, LinkedIn, and résumé links on the right side of that page
+are ordinary links near the bottom of the file — edit them like any other
+text.

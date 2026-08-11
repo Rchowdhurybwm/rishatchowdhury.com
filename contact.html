@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- ---------------------------------------------------------------
+     Contact page. Sits alongside index.html in the same folder.
+     The form does not send mail by itself — it opens the visitor's
+     own email app with the message pre-filled. No server, nothing
+     to configure, nothing stored.
+     To change the destination address, search for: const TO =
+     --------------------------------------------------------------- -->
+
+<title>Contact — Rishat Chowdhury</title>
+<meta name="author" content="Rishat Chowdhury">
+<meta name="description" content="Get in touch with Rishat Chowdhury, Senior QA Engineer — open to senior QA and test automation roles, remote, hybrid, or on-site.">
+<meta name="theme-color" content="#FDF8F0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#FDF8F0;
+    --paper-deep:#F8F1E4;
+    --ink:#1C1A17;
+    --body-ink:#3A362F;
+    --muted:#6E675C;
+    --accent:#1F4E46;
+    --accent-dark:#173B35;
+    --rule:#E3D9C7;
+
+    --display:"Newsreader", Georgia, serif;
+    --body:"IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    --mono:"IBM Plex Mono", ui-monospace, monospace;
+
+    --shell:min(1060px, 100% - 3rem);
+    --column:min(680px, 100% - 3rem);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--body); font-size:17px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    display:flex; flex-direction:column; min-height:100vh;
+  }
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px;}
+  .shell{width:var(--shell); margin-inline:auto;}
+  .column{width:var(--column); margin-inline:auto;}
+
+  /* ---------------- nav ---------------- */
+  .topbar{
+    background:rgba(253,248,240,.92);
+    border-bottom:1px solid var(--rule);
+    position:sticky; top:0; z-index:50;
+    backdrop-filter:blur(10px);
+  }
+  .topbar .shell{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:1.5rem; padding:.85rem 0;
+  }
+  .mark{font-family:var(--display); font-size:1.05rem; font-weight:600; text-decoration:none;}
+  .topbar nav{display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap;}
+  .topbar nav a{
+    font-family:var(--mono); font-size:.74rem;
+    letter-spacing:.08em; text-transform:uppercase;
+    text-decoration:none; color:var(--muted);
+    padding:.2rem 0; border-bottom:1px solid transparent;
+    transition:color .18s ease, border-color .18s ease;
+  }
+  .topbar nav a:hover{color:var(--accent); border-bottom-color:var(--accent);}
+  .topbar nav a.here{color:var(--accent); border-bottom-color:var(--accent);}
+  .topbar nav a.pill{
+    border:1px solid var(--rule); border-radius:6px;
+    padding:.42rem .85rem; color:var(--ink);
+  }
+  .topbar nav a.pill:hover{border-color:var(--accent); color:var(--accent);}
+  @media (max-width:760px){ .topbar nav a:not(.pill){display:none;} }
+
+  main{flex:1; padding:4rem 0 5rem;}
+
+  h1{
+    font-family:var(--display); font-weight:500;
+    font-size:clamp(2.3rem, 6vw, 3.1rem);
+    letter-spacing:-.02em; margin:0 0 .8rem;
+  }
+  .intro{color:var(--body-ink); margin:0 0 2.2rem; max-width:52ch;}
+  .intro a{color:var(--accent); text-decoration:underline; text-underline-offset:2px;}
+
+  /* ---------------- two columns ---------------- */
+  .grid{
+    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.62fr);
+    gap:3rem; align-items:start;
+  }
+  @media (max-width:720px){
+    .grid{grid-template-columns:1fr; gap:2.5rem;}
+  }
+
+  .field{margin-bottom:1.25rem;}
+  .field label{display:block; font-size:.92rem; margin-bottom:.4rem;}
+  .field input, .field textarea{
+    width:100%; font-family:var(--body); font-size:1rem;
+    color:var(--ink); background:var(--paper-deep);
+    border:1px solid var(--rule); border-radius:8px;
+    padding:.7rem .85rem; line-height:1.5;
+    transition:border-color .18s ease, background .18s ease;
+  }
+  .field input:focus, .field textarea:focus{
+    outline:none; border-color:var(--accent); background:#FFFDF8;
+  }
+  .field textarea{min-height:160px; resize:vertical;}
+
+  .send{
+    width:100%; cursor:pointer;
+    font-family:var(--body); font-size:.98rem; font-weight:500;
+    color:var(--paper); background:var(--accent);
+    border:1px solid var(--accent); border-radius:8px;
+    padding:.85rem 1.5rem;
+    transition:background .18s ease;
+  }
+  .send:hover{background:var(--accent-dark);}
+  .error{color:#8A2B22; font-size:.88rem; margin:.75rem 0 0; display:none;}
+  .error.show{display:block;}
+
+  /* ---------------- side links ---------------- */
+  .side{display:flex; flex-direction:column; gap:1.15rem; padding-top:.15rem;}
+  .side a{
+    color:var(--accent); text-decoration:none;
+    font-size:.97rem; word-break:break-word;
+  }
+  .side a:hover{text-decoration:underline; text-underline-offset:2px;}
+
+  footer{
+    padding:1.8rem 0; border-top:1px solid var(--rule);
+    font-family:var(--mono); font-size:.71rem;
+    letter-spacing:.06em; color:var(--muted);
+    display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+  }
+  footer a{text-decoration:none;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="shell">
+    <a class="mark" href="index.html">Rishat Chowdhury</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="index.html#experience">Experience</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#credentials">Credentials</a>
+      <a href="contact.html" class="here">Contact</a>
+      <a href="RishatChowdhury.pdf" class="pill" download>Résumé</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="column">
+    <h1>Contact</h1>
+    <p class="intro">
+      Prefer email or <a href="https://www.linkedin.com/in/rishat-chowdhury/" target="_blank" rel="noopener">LinkedIn</a>.
+      The form below opens your own mail app with the message ready to send.
+    </p>
+
+    <div class="grid">
+      <div>
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" id="name" autocomplete="name">
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message"></textarea>
+        </div>
+
+        <button type="button" class="send" id="send">Send via email app</button>
+        <p class="error" id="error"></p>
+      </div>
+
+      <div class="side">
+        <a href="mailto:rishat.chowdhury1@gmail.com">rishat.chowdhury1@gmail.com</a>
+        <a href="tel:+15714253738">571-425-3738</a>
+        <a href="https://www.linkedin.com/in/rishat-chowdhury/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="RishatChowdhury.pdf" download>Résumé (PDF)</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="shell">
+  <span>© <span id="yr">2026</span> Rishat Chowdhury</span>
+  <span><a href="index.html">Back to homepage</a></span>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  const TO = 'rishat.chowdhury1@gmail.com';
+  const err = document.getElementById('error');
+  function fail(m){ err.textContent = m; err.classList.add('show'); }
+
+  document.getElementById('send').addEventListener('click', function () {
+    err.classList.remove('show');
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    if (!name || !email || !message) {
+      return fail('Please fill in your name, email, and a message.');
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return fail('That email address doesn\u2019t look right \u2014 please check it.');
+    }
+
+    const subject = 'Website enquiry from ' + name;
+    const body = message + '\n\n\u2014\n' + name + '\n' + email;
+
+    window.location.href = 'mailto:' + TO +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+  });
+</script>
+
+</body>
+</html>
